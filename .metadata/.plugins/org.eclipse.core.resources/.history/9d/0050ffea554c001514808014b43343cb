@@ -1,0 +1,28 @@
+import java.util.List;
+import java.util.Map;
+
+import com.net2plan.interfaces.networkDesign.IAlgorithm;
+import com.net2plan.interfaces.networkDesign.NetPlan;
+import com.net2plan.utils.Triple;
+
+public class NULB implements IAlgorithm{
+
+	@Override
+	public String executeAlgorithm(NetPlan arg0, Map<String, String> arg1, Map<String, String> arg2) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getDescription() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Triple<String, String, String>> getParameters() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

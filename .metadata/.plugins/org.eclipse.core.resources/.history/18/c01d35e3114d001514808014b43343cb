@@ -1,0 +1,68 @@
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import com.net2plan.interfaces.networkDesign.IAlgorithm;
+import com.net2plan.interfaces.networkDesign.NetPlan;
+import com.net2plan.utils.Pair;
+import com.net2plan.utils.Triple;
+
+public class NULB implements IAlgorithm{
+
+	@Override
+	public String executeAlgorithm(NetPlan NetPlan, Map<String, String> arg1, Map<String, String> arg2) {
+		// TODO Auto-generated method stub
+		
+		System.out.println(NetPlan.getRouteAllSequenceOfLinks());
+		Map<Long,List<Long>> routes =NetPlan.getRouteAllSequenceOfLinks();
+		
+		Set<Long> demands = NetPlan.getDemandIds();
+		
+		Map<Long,List<Pair<Long,Long>>> demandsWithPath = new HashMap<>();
+		
+		for(Long demand : demands){ //para cada rota
+			System.out.println("\n Demanda atual:"+demand);
+			List<Long> route = routes.get(demand); //pega o caminho da rota arestas por onde passa
+			
+			System.out.println("\n Rota para de manda "+demand+"  ->  "+route);
+			
+			List<Pair<Long,Long>> pairVertex = new ArrayList<Pair<Long,Long>>();
+		
+			for(Long link : route){  //para cada uma das arestas
+				System.out.println("\n Para o link "+ link);
+				
+				
+				Pair<Long,Long> pair  = NetPlan.getLinkMap().get(link);
+				
+				System.out.println("\n Ingres : "+pair.getFirst()+"  Egres : "+pair.getSecond());
+				
+				pairVertex.add(pair);
+			}
+			System.out.println("\nId demanda: "+demand+"   vertices usados: "+pairVertex);
+			demandsWithPath.put(demand, pairVertex);
+			
+		}
+		
+		System.out.println(demandsWithPath);
+		
+		
+		
+		
+				
+		return null;
+	}
+
+	@Override
+	public String getDescription() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Triple<String, String, String>> getParameters() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}
