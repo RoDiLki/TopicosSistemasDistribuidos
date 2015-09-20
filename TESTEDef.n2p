@@ -1,0 +1,39 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<network description="" name="" version="3">
+	<node id="0" xCoord="312.0" yCoord="-301.0" name="Node 0"/>
+	<node id="1" xCoord="311.0" yCoord="-159.0" name="Node 1"/>
+	<node id="2" xCoord="400.0" yCoord="-63.0" name="Node 2"/>
+	<node id="3" xCoord="476.0" yCoord="-166.0" name="Node 3"/>
+	<node id="4" xCoord="477.0" yCoord="-295.0" name="Node 4"/>
+	<layer id="0" name="" description="" linkCapacityUnitsName="" demandTrafficUnitsName="">
+		<link id="0" originNodeId="0" destinationNodeId="1" capacity="0.0" lengthInKm="0.0" propagationSpeedInKmPerSecond="200000.0"/>
+		<link id="1" originNodeId="1" destinationNodeId="0" capacity="0.0" lengthInKm="0.0" propagationSpeedInKmPerSecond="200000.0"/>
+		<link id="2" originNodeId="1" destinationNodeId="2" capacity="0.0" lengthInKm="0.0" propagationSpeedInKmPerSecond="200000.0"/>
+		<link id="3" originNodeId="2" destinationNodeId="3" capacity="0.0" lengthInKm="0.0" propagationSpeedInKmPerSecond="200000.0"/>
+		<link id="4" originNodeId="3" destinationNodeId="4" capacity="0.0" lengthInKm="0.0" propagationSpeedInKmPerSecond="200000.0"/>
+		<link id="5" originNodeId="4" destinationNodeId="3" capacity="0.0" lengthInKm="0.0" propagationSpeedInKmPerSecond="200000.0"/>
+		<link id="6" originNodeId="4" destinationNodeId="1" capacity="0.0" lengthInKm="0.0" propagationSpeedInKmPerSecond="200000.0"/>
+		<demand id="0" ingressNodeId="0" egressNodeId="1" offeredTraffic="0.0"/>
+		<demand id="1" ingressNodeId="1" egressNodeId="0" offeredTraffic="0.0"/>
+		<demand id="2" ingressNodeId="0" egressNodeId="2" offeredTraffic="0.0"/>
+		<demand id="3" ingressNodeId="2" egressNodeId="0" offeredTraffic="0.0"/>
+		<demand id="4" ingressNodeId="0" egressNodeId="4" offeredTraffic="0.0"/>
+		<demand id="5" ingressNodeId="4" egressNodeId="0" offeredTraffic="0.0"/>
+		<demand id="6" ingressNodeId="1" egressNodeId="4" offeredTraffic="0.0"/>
+		<demand id="7" ingressNodeId="4" egressNodeId="1" offeredTraffic="0.0"/>
+		<demand id="8" ingressNodeId="2" egressNodeId="3" offeredTraffic="0.0"/>
+		<demand id="9" ingressNodeId="3" egressNodeId="2" offeredTraffic="0.0"/>
+		<sourceRouting>
+			<route id="0" demandId="0" carriedTraffic="0.0" occupiedCapacity="-1.0" seqLinks="0" backupSegmentList=""/>
+			<route id="1" demandId="1" carriedTraffic="0.0" occupiedCapacity="-1.0" seqLinks="1" backupSegmentList=""/>
+			<route id="2" demandId="2" carriedTraffic="0.0" occupiedCapacity="-1.0" seqLinks="0 2" backupSegmentList=""/>
+			<route id="3" demandId="3" carriedTraffic="0.0" occupiedCapacity="-1.0" seqLinks="3 4 6 1" backupSegmentList=""/>
+			<route id="4" demandId="4" carriedTraffic="0.0" occupiedCapacity="-1.0" seqLinks="0 2 3 4" backupSegmentList=""/>
+			<route id="5" demandId="5" carriedTraffic="0.0" occupiedCapacity="-1.0" seqLinks="6 1" backupSegmentList=""/>
+			<route id="6" demandId="6" carriedTraffic="0.0" occupiedCapacity="-1.0" seqLinks="2 3 4" backupSegmentList=""/>
+			<route id="7" demandId="7" carriedTraffic="0.0" occupiedCapacity="-1.0" seqLinks="6" backupSegmentList=""/>
+			<route id="8" demandId="8" carriedTraffic="0.0" occupiedCapacity="-1.0" seqLinks="3" backupSegmentList=""/>
+			<route id="9" demandId="9" carriedTraffic="0.0" occupiedCapacity="-1.0" seqLinks="4 6 2" backupSegmentList=""/>
+		</sourceRouting>
+	</layer>
+</network>

@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -7,7 +8,6 @@ import com.net2plan.interfaces.networkDesign.IAlgorithm;
 import com.net2plan.interfaces.networkDesign.NetPlan;
 import com.net2plan.utils.Pair;
 import com.net2plan.utils.Triple;
-
 public class NULB implements IAlgorithm{
 
 	@Override
@@ -56,7 +56,7 @@ public class NULB implements IAlgorithm{
 			
 			for(Pair<Long,Long> vrt : vertexPairs){
 				matrix[i][vrt.getFirst().intValue()][vrt.getSecond().intValue()] = 1;
-				matrix[i][vrt.getSecond().intValue()][vrt.getFirst().intValue()] = 1;
+				//matrix[i][vrt.getSecond().intValue()][vrt.getFirst().intValue()] = 1;
 			}
 			i++;
 		}
@@ -75,6 +75,7 @@ public class NULB implements IAlgorithm{
 				}
 			}
 		}
+		// http://www.sanfoundry.com/java-program-graph-coloring-algorithm/
 		
 		System.out.print("x|    ");
 		for (int m = 0; m <= nNodes; m++) {
@@ -90,10 +91,92 @@ public class NULB implements IAlgorithm{
 			System.out.println();
 		}
 		
-				
-		return null;
+		
+		
+		boolean temColoracao = false;
+		for(int nColor = 4; temColoracao == false && nColor < nDemands;nColor++){
+			GraphColoring gc = new GraphColoring(nDemands,demandMatrix);
+			System.out.println("Testing "+nColor);
+			temColoracao = gc.graphColor(demandMatrix, nColor);
+			
+			
+		}
+		
+		return "Ok!";
 	}
-
+	
+	public class GraphColoring
+	{    
+		
+	    private int V, numOfColors;
+	    private int[] color; 
+	    private int[][] graph;
+	    
+	    public GraphColoring(int VC,int[][] graphC){
+	    	this.V = VC;
+	    	this.graph = graphC;
+	    }
+		 /* Function to assign color */
+	    
+	    public boolean graphColor(int[][] g, int noc)
+	    {
+	        V = g.length;
+	        numOfColors = noc;
+	        color = new int[V];
+	        graph = g;
+	 
+	        try
+	        {
+	            solve(0);
+	            System.out.println("No solution com "+noc);
+	            return false;
+	        }
+	        catch (Exception e)
+	        {
+	        	System.out.println(e);
+	            System.out.println("\nSolution exists ");
+	            display();
+	            return true;
+	        }
+	        
+	    }
+	    /* function to assign colors recursively */
+	    public void solve(int v) throws Exception
+	    {
+	        /* base case - solution found */
+	        if (v == V)
+	            throw new Exception("Solution found");
+	        /* try all colors */
+	        for (int c = 1; c <= numOfColors; c++)
+	        {
+	            if (isPossible(v, c))
+	            {
+	                /* assign and proceed with next vertex */
+	                color[v] = c;
+	                solve(v + 1);
+	                /* wrong assignment */
+	                color[v] = 0;
+	            }
+	        }    
+	    }
+	    /* function to check if it is valid to allot that color to vertex */
+	    public boolean isPossible(int v, int c)
+	    {
+	    	System.out.println("Possible ");
+	        for (int i = 0; i < V; i++)
+	            if (graph[v][i] == 1 && c == color[i])
+	                return false;
+	        return true;
+	    }
+	    /* display solution */
+	    public void display()
+	    {
+	        System.out.print("\nColors : ");
+	        for (int i = 0; i < V; i++)
+	            System.out.print(color[i] +" ");
+	        System.out.println();
+	    }    
+	}
 	@Override
 	public String getDescription() {
 		// TODO Auto-generated method stub
