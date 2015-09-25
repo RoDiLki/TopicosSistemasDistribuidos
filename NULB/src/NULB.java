@@ -10,40 +10,41 @@ import com.net2plan.utils.Pair;
 import com.net2plan.utils.Triple;
 public class NULB implements IAlgorithm{
 
-	@Override
 	public String executeAlgorithm(NetPlan NetPlan, Map<String, String> arg1, Map<String, String> arg2) {
 		// TODO Auto-generated method stub
 		
-		System.out.println(NetPlan.getRouteAllSequenceOfLinks());
+		//System.out.println(NetPlan.getRouteAllSequenceOfLinks());
 		
-		Map<Long,List<Long>> routes =NetPlan.getRouteAllSequenceOfLinks();
+		Map<Long,List<Long>> newRoutes =NetPlan.getRouteAllSequenceOfLinks();
+		
+		
+		Map<Long,List<Long>> routes = new HashMap<>();
+		
+		Long key = (long) 0;
+		for(Long ax :newRoutes.keySet()){
+			List<Long> ll = newRoutes.get(ax);
+			routes.put(key,ll);
+			key++;
+		}
 		
 		Set<Long> demands = NetPlan.getDemandIds();
 		
 		Map<Long,List<Pair<Long,Long>>> demandsWithPath = new HashMap<>();
 		
 		for(Long demand : demands){ //para cada rota
-			//System.out.println("\n Demanda atual:"+demand);
 			List<Long> route = routes.get(demand); //pega o caminho da rota arestas por onde passa
-			
-			//System.out.println("\n Rota para de manda "+demand+"  ->  "+route);
-			
+						
 			List<Pair<Long,Long>> pairVertex = new ArrayList<Pair<Long,Long>>();
 		
 			for(Long link : route){  //para cada uma das arestas
-				//System.out.println("\n Para o link "+ link);
 				
 				Pair<Long,Long> pair  = NetPlan.getLinkMap().get(link);
 				
-				//System.out.println("\n Egres : "+pair.getFirst()+"  Ingres : "+pair.getSecond());
-				
 				pairVertex.add(pair);
 			}
-			//System.out.println("\nId demanda: "+demand+"   vertices usados: "+pairVertex);
 			demandsWithPath.put(demand, pairVertex);
 			
 		}
-		//System.out.println(demandsWithPath);
 		
 		int nNodes = NetPlan.getNumberOfNodes();
 		int nDemands = NetPlan.getNumberOfDemands();
@@ -56,7 +57,6 @@ public class NULB implements IAlgorithm{
 			
 			for(Pair<Long,Long> vrt : vertexPairs){
 				matrix[i][vrt.getFirst().intValue()][vrt.getSecond().intValue()] = 1;
-				//matrix[i][vrt.getSecond().intValue()][vrt.getFirst().intValue()] = 1;
 			}
 			i++;
 		}
@@ -66,18 +66,15 @@ public class NULB implements IAlgorithm{
 				for(k=0;k<nNodes;k++){
 					for(l=0;l<nNodes;l++){
 						if (matrix[i][k][l] == matrix[j][k][l] && matrix[i][k][l] == 1 && k!=l){
-							//System.out.println("I: "+i+" J:"+j);
 							demandMatrix[i][j] = 1;
 							demandMatrix[j][i] = 1;
 						}
-						//demandMatrix[1][1] = 1;
 					}
 				}
 			}
 		}
-		// http://www.sanfoundry.com/java-program-graph-coloring-algorithm/
 		
-		System.out.print("x|    ");
+		/*System.out.print("x|    ");
 		for (int m = 0; m <= nNodes; m++) {
 			System.out.print(""+m+" - ");
 		}
@@ -89,18 +86,10 @@ public class NULB implements IAlgorithm{
 				System.out.print(""+demandMatrix[i][j]+" - ");
 			}
 			System.out.println();
-		}
-		
-		
-		
-		boolean temColoracao = false;
-		for(int nColor = 4; temColoracao == false && nColor < nDemands;nColor++){
-			GraphColoring gc = new GraphColoring(nDemands,demandMatrix);
-			System.out.println("Testing "+nColor);
-			temColoracao = gc.graphColor(demandMatrix, nColor);
-			
-			
-		}
+		}*/
+
+		GraphColoring gc = new GraphColoring(nDemands,demandMatrix);
+		gc.graphColor(demandMatrix);
 		
 		return "Ok!";
 	}
@@ -108,7 +97,7 @@ public class NULB implements IAlgorithm{
 	public class GraphColoring
 	{    
 		
-	    private int V, numOfColors;
+	    private int V;
 	    private int[] color; 
 	    private int[][] graph;
 	    
@@ -118,23 +107,21 @@ public class NULB implements IAlgorithm{
 	    }
 		 /* Function to assign color */
 	    
-	    public boolean graphColor(int[][] g, int noc)
+	    public boolean graphColor(int[][] g)
 	    {
 	        V = g.length;
-	        numOfColors = noc;
 	        color = new int[V];
 	        graph = g;
 	 
 	        try
 	        {
 	            solve(0);
-	            System.out.println("No solution com "+noc);
+	            System.out.println("No solution");
 	            return false;
 	        }
 	        catch (Exception e)
 	        {
 	        	System.out.println(e);
-	            System.out.println("\nSolution exists ");
 	            display();
 	            return true;
 	        }
@@ -145,9 +132,9 @@ public class NULB implements IAlgorithm{
 	    {
 	        /* base case - solution found */
 	        if (v == V)
-	            throw new Exception("Solution found");
+	            throw new Exception("Solution exists!");
 	        /* try all colors */
-	        for (int c = 1; c <= numOfColors; c++)
+	        for (int c = 1; c <= V; c++)
 	        {
 	            if (isPossible(v, c))
 	            {
@@ -162,7 +149,7 @@ public class NULB implements IAlgorithm{
 	    /* function to check if it is valid to allot that color to vertex */
 	    public boolean isPossible(int v, int c)
 	    {
-	    	System.out.println("Possible ");
+	    	//System.out.println("Possible ");
 	        for (int i = 0; i < V; i++)
 	            if (graph[v][i] == 1 && c == color[i])
 	                return false;
@@ -171,11 +158,14 @@ public class NULB implements IAlgorithm{
 	    /* display solution */
 	    public void display()
 	    {
-	        System.out.print("\nColors : ");
-	        for (int i = 0; i < V; i++)
-	            System.out.print(color[i] +" ");
-	        System.out.println();
-	    }    
+	        System.out.print("\nDemanda -  Lambda \n");
+	        int maior = -1;
+	        for (int i = 0; i < V; i++){
+	        	if(color[i] > maior) maior = color[i];
+	            System.out.print(" "+i+"\t   "+color[i] +"\n");
+	        }
+	        System.out.println("\nNumero de comprimentos de ondas: "+maior);
+	    }
 	}
 	@Override
 	public String getDescription() {
